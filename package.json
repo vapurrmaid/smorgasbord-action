@@ -1,0 +1,93 @@
+{
+  "name": "smorgasbord-action",
+  "version": "0.0.0",
+  "description": "Github action that provides an interface to the npm package smorgasbord.",
+  "keywords": [
+    "actions",
+    "node",
+    "scan",
+    "vulnerabilities"
+  ],
+  "homepage": "https://github.com/vapurrmaid/smorgasbord-action",
+  "bugs": {
+    "email": "vapurrmaid@pm.me",
+    "url": "https://github.com/vapurrmaid"
+  },
+  "license": "MIT",
+  "author": {
+    "email": "vapurrmaid@pm.me",
+    "name": "Gregory (Grey) Barkans",
+    "url": "https://github.com/vapurrmaid"
+  },
+  "main": "lib/main.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vapurrmaid/smorgasbord-action.git"
+  },
+  "scripts": {
+    "all": "npm-run-all clean format lint build pack",
+    "build": "tsc",
+    "clean": "npm-run-all clean:*",
+    "clean:build": "rimraf lib",
+    "format": "prettier --write **/*.ts",
+    "format:check": "prettier --check **/*.ts",
+    "lint": "npm-run-all lint:*",
+    "lint:js": "eslint --color src/**/*.ts",
+    "lint:md": "markdownlint **/*.md --ignore node_modules",
+    "pack": "ncc build",
+    "release": "release-it"
+  },
+  "dependencies": {
+    "@actions/core": "^1.2.0",
+    "@vapurrmaid/smorgasbord": "^0.5.1"
+  },
+  "devDependencies": {
+    "@types/node": "^13.1.1",
+    "@typescript-eslint/eslint-plugin": "^2.13.0",
+    "@typescript-eslint/parser": "^2.13.0",
+    "@zeit/ncc": "^0.20.5",
+    "eslint": "^6.8.0",
+    "eslint-plugin-github": "^3.4.0",
+    "husky": "^3.1.0",
+    "lint-staged": "^9.5.0",
+    "markdownlint-cli": "^0.20.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^1.19.1",
+    "release-it": "^12.4.3",
+    "rimraf": "^3.0.0",
+    "typescript": "^3.7.4"
+  },
+  "private": true,
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "npm audit"
+    }
+  },
+  "lint-staged": {
+    "*.{ts}": [
+      "npm run lint:js -- --fix",
+      "git add"
+    ],
+    "*.{md}": [
+      "npm run lint:md",
+      "git add"
+    ]
+  },
+  "release-it": {
+    "git": {
+      "commitArgs": "--gpg-sign",
+      "commitMessage": ":rocket: v${version}",
+      "tagAnnotation": "v${version}",
+      "tagArgs": "--sign"
+    },
+    "github": {
+      "release": true,
+      "releaseName": "Release ${version}",
+      "tokenRef": "RELEASE_IT_GITHUB_TOKEN"
+    },
+    "npm": {
+      "publish": false
+    }
+  }
+}

@@ -1,0 +1,16 @@
+name: 'smorgasbord-probe'
+author: 'vapurrmaid'
+description: 'Provides an interface to the npm package @vapurrmaid/smorgasbord, a tool that scans web servers for potential vulnerabilities.'
+branding:
+  color: 'purple'
+  icon: 'shield'
+
+inputs:
+
+  fqdn:
+    description: 'Domain to probe. Ex: https://<your-domain-name>'
+    required: true
+
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
